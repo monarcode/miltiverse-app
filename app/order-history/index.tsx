@@ -46,6 +46,7 @@ const OrderHistory = () => {
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => renderItem({ item })}
           contentContainerStyle={{ paddingBottom: 100, rowGap: theme.margins['3xl'] }}
+          showsVerticalScrollIndicator={false}
         />
       </View>
     </SafeAreaView>
