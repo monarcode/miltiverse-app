@@ -1,5 +1,7 @@
+import { router } from 'expo-router';
+import { ArrowLeft } from 'iconsax-react-native';
 import { ReactNode } from 'react';
-import { Image } from 'react-native';
+import { Pressable } from 'react-native';
 import { UnistylesRuntime, createStyleSheet, useStyles } from 'react-native-unistyles';
 
 import { Text, View } from '~/components/shared';
@@ -7,13 +9,15 @@ import useCheckoutStore from '~/store/checkout';
 
 const topSafeArea = UnistylesRuntime.insets.top;
 
-const Header = ({ label, link }: { label: string; link?: ReactNode }) => {
-  const { styles } = useStyles(_styles);
+const PlainHeader = ({ label, link }: { label: string; link?: ReactNode }) => {
+  const { styles, theme } = useStyles(_styles);
   const checkoutStage = useCheckoutStore((v) => v.stage);
 
   return (
     <View style={styles.container}>
-      <Image source={require('~/assets/logo.png')} style={styles.logo} />
+      <Pressable onPress={() => router.back()}>
+        <ArrowLeft color={theme.colors.text} size={24} />
+      </Pressable>
       {checkoutStage !== 'success' && (
         <View style={styles.labelWrapper}>
           <Text style={styles.label}>{label}</Text>
@@ -30,7 +34,8 @@ const _styles = createStyleSheet((theme) => ({
     backgroundColor: theme.colors.background,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 10,
+    paddingHorizontal: 24,
+    paddingBottom: 12,
   },
   labelWrapper: {
     position: 'absolute',
@@ -55,4 +60,4 @@ const _styles = createStyleSheet((theme) => ({
   },
 }));
 
-export default Header;
+export default PlainHeader;

@@ -49,7 +49,7 @@ const CustomBottomNavigation = ({ state, descriptors, navigation }: BottomTabBar
             {
               width: _TAB_WIDTH * 1.3,
               left: _TAB_WIDTH / 2.6,
-              top: _TAB_WIDTH / 2.4,
+              top: _TAB_WIDTH / 2.2,
             },
             styles.indicator,
           ]}

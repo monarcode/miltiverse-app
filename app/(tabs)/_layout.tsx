@@ -1,5 +1,5 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import { Tabs } from 'expo-router';
+import { Link, Tabs } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
 import CustomBottomNavigation from '~/components/navigation/bottom-navigation';
@@ -23,13 +23,17 @@ export default function TabLayout() {
         <Tabs.Screen
           name="index"
           options={{
-            header: () => <Header label="Product List" />,
+            header: () => (
+              <Header label="Product List" link={<Link href="/wishlist">Wishlist</Link>} />
+            ),
           }}
         />
         <Tabs.Screen
           name="cart"
           options={{
-            header: () => <Header label="My Cart" />,
+            header: () => (
+              <Header label="My Cart" link={<Link href="/order-history">History</Link>} />
+            ),
           }}
         />
         <Tabs.Screen

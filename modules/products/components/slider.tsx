@@ -26,15 +26,15 @@ const ProductsSlider = ({ products }: { products: Product[] | undefined }) => {
   const { theme } = useStyles();
 
   // Renders a slide with a product card for each item in the array.
-  const renderSlide = ({ item, index }: { item: Product[]; index: number }) => (
+  const renderSlide = ({ item }: { item: Product[]; index: number }) => (
     <View style={styles.slide}>
-      {item.map((subItem, subIndex) => (
+      {item.map((subItem) => (
         <View key={subItem.id} style={styles.columnWrapper}>
           <ProductCard
             product={{
               description: subItem.description ?? '',
               id: subItem.id,
-              image: subItem.photos?.[0]?.url ?? '', // Add null check
+              image: subItem.photos?.[0]?.url ?? '',
               price: Number(subItem.current_price?.[0]?.NGN?.[0]?.toString()) ?? 0,
               title: subItem.name,
             }}

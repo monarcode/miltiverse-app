@@ -2,20 +2,45 @@ import { router } from 'expo-router';
 import { useEffect } from 'react';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import uuid from 'react-native-uuid';
 
 import Success from '~/assets/icons/success.svg';
 import { Text, View } from '~/components/shared';
 import useCartStore from '~/store/cart.store';
 import useCheckoutStore from '~/store/checkout';
+import useOrderHistoryStore, { OrderItem } from '~/store/order-history';
 
 const SuccessScreen = () => {
   const { styles } = useStyles(_styles);
   const setStage = useCheckoutStore((v) => v.setStage);
   const clearCart = useCartStore((v) => v.clearCart);
+  const cartItems = useCartStore((v) => v.cartedItems);
+  const addOrder = useOrderHistoryStore((v) => v.addOrder);
+  const updateCheckout = useCheckoutStore((v) => v.updateCardDetails);
 
-  const onSuccess = () => {
+  const createOrder = async () => {
+    const _items: OrderItem[] = cartItems.map((item) => ({
+      id: item.id,
+      name: item.title,
+      price: item.price,
+      quantity: item.quantity,
+      image: item.image,
+    }));
+
+    await addOrder({
+      id: uuid.v4().toString(),
+      date: new Date(),
+      items: _items,
+      total: _items.reduce((acc, item) => acc + item.price * item.quantity, 0),
+      status: 'shipped',
+    });
+  };
+
+  const onSuccess = async () => {
+    await createOrder();
     setStage('address');
     clearCart();
+    updateCheckout({ cardNumber: '', cardExpiry: '', cardCvv: '' });
     router.replace('/');
   };
 

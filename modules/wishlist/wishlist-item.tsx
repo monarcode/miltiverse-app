@@ -1,16 +1,16 @@
 import { Image } from 'expo-image';
 import { Heart } from 'iconsax-react-native';
+import { MotiView } from 'moti';
 import { Pressable } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
-import StarRating from '~/assets/icons/stars.svg';
 import { Text, View } from '~/components/shared';
 import { formatCurrency } from '~/helpers/currencyFormat';
 import useCartStore from '~/store/cart.store';
 import useWishlistStore from '~/store/wishlist.store';
 import { TProductCardProps } from '~/types/shared';
 
-const ProductCard = ({ product }: { product: TProductCardProps }) => {
+const WishlistItem = ({ product }: { product: TProductCardProps }) => {
   const { styles, theme } = useStyles(_styles);
   const cartStore = useCartStore((v) => v);
   const wishListStore = useWishlistStore((v) => v);
@@ -38,7 +38,7 @@ const ProductCard = ({ product }: { product: TProductCardProps }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <MotiView key={product.id} style={styles.constianer}>
       <View style={styles.imageWrapper}>
         <Image
           source={{
@@ -59,16 +59,14 @@ const ProductCard = ({ product }: { product: TProductCardProps }) => {
         </Pressable>
       </View>
 
-      <View style={styles.body}>
-        <Text numberOfLines={1} style={styles.title}>
-          {product.title}
-        </Text>
-        <Text numberOfLines={1} style={styles.desc}>
-          {product.description}
-        </Text>
-
+      <View style={{ marginTop: 8, rowGap: theme.margins.sm }}>
         <View>
-          <StarRating />
+          <Text numberOfLines={1} style={styles.title}>
+            {product.title}
+          </Text>
+          <Text numberOfLines={1} style={styles.desc}>
+            {product.description}
+          </Text>
         </View>
 
         <Text style={styles.price}>{formatCurrency(product.price)}</Text>
@@ -79,18 +77,18 @@ const ProductCard = ({ product }: { product: TProductCardProps }) => {
           </Text>
         </Pressable>
       </View>
-    </View>
+    </MotiView>
   );
 };
 
 const _styles = createStyleSheet((theme) => ({
-  container: {
-    flex: 1,
-    rowGap: theme.margins.lg,
+  constianer: {
+    width: '100%',
+    maxWidth: '47%',
   },
   imageWrapper: {
     backgroundColor: theme.colors.gray,
-    height: 190,
+    height: 210,
     borderRadius: 8,
   },
   image: {
@@ -98,18 +96,12 @@ const _styles = createStyleSheet((theme) => ({
     aspectRatio: 1,
     margin: 'auto',
   },
-  body: {
-    rowGap: theme.margins.sm,
-  },
   title: {
-    color: theme.colors.text,
-    fontSize: 12,
     fontFamily: theme.fontFamily[600],
   },
   desc: {
-    color: theme.colors.text,
-    fontSize: 12,
     fontFamily: theme.fontFamily[400],
+    fontSize: theme.fontSizes.sm,
   },
   price: {
     color: theme.colors.brand,
@@ -138,4 +130,4 @@ const _styles = createStyleSheet((theme) => ({
   },
 }));
 
-export default ProductCard;
+export default WishlistItem;

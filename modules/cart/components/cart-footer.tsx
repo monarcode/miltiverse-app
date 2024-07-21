@@ -13,6 +13,8 @@ const CartFooter = () => {
   const { styles, theme } = useStyles(_styles);
   const cartStore = useCartStore((v) => v);
 
+  // console.log(typeof new Date());
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Shopping Summary</Text>
