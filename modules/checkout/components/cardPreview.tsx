@@ -25,7 +25,7 @@ const CardPreview = () => {
 
           <View style={{ rowGap: 2 }}>
             <Text style={styles.label}>Expiry date</Text>
-            <Text style={styles.value}>{cardDetails.cardCvv}</Text>
+            <Text style={styles.value}>{cardDetails.cardExpiry}</Text>
           </View>
         </View>
       </View>

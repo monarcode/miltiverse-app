@@ -15,6 +15,8 @@ const AddressScreen = () => {
   const [phoneOne, setPhoneOne] = useState<string>('');
   const [phoneTwo, setPhoneTwo] = useState<string>('');
 
+  const isDisabled = phoneOne.length < 10 && phoneTwo.length < 10;
+
   return (
     <TouchableWithoutFeedback style={{ flex: 1 }} onPress={() => Keyboard.dismiss()}>
       <KeyboardAvoidingView
@@ -73,7 +75,9 @@ const AddressScreen = () => {
           </View>
 
           <View style={{ paddingHorizontal: 24 }}>
-            <Button onPress={() => checkoutStore.setStage('payment')}>Go to Payment</Button>
+            <Button disabled={isDisabled} onPress={() => checkoutStore.setStage('payment')}>
+              Go to Payment
+            </Button>
           </View>
         </View>
       </KeyboardAvoidingView>

@@ -1,4 +1,5 @@
 import { router } from 'expo-router';
+import { useState } from 'react';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 import { Button, Text, View } from '~/components/shared';
@@ -12,8 +13,14 @@ const discountAmount = 3500;
 const CartFooter = () => {
   const { styles, theme } = useStyles(_styles);
   const cartStore = useCartStore((v) => v);
+  const [code, setcode] = useState<string>('');
+  const [showDiscount, setShowDiscount] = useState<boolean>(false);
 
-  // console.log(typeof new Date());
+  const handleSUbmit = () => {
+    if (code.length >= 6) {
+      setShowDiscount(true);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -23,8 +30,14 @@ const CartFooter = () => {
         <Text style={styles.discount}>Discount Code</Text>
 
         <View style={styles.discountContainer}>
-          <TextInput style={{ flex: 1, width: '100%' }} />
-          <Button>Apply</Button>
+          <TextInput
+            value={code}
+            onChangeText={setcode}
+            style={{ flex: 1, width: '100%' }}
+            onSubmitEditing={handleSUbmit}
+            returnKeyType="done"
+          />
+          <Button onPress={handleSUbmit}>Apply</Button>
         </View>
       </View>
 
@@ -37,10 +50,12 @@ const CartFooter = () => {
           <Text style={styles.costLabel}>Deliery Fee</Text>
           <Text style={styles.costValue}>{formatCurrency(deliveryFee)}</Text>
         </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Text style={styles.costLabel}>Discount Amount</Text>
-          <Text style={styles.costValue}>{formatCurrency(discountAmount)}</Text>
-        </View>
+        {showDiscount && (
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Text style={styles.costLabel}>Discount Amount</Text>
+            <Text style={styles.costValue}>{formatCurrency(discountAmount)}</Text>
+          </View>
+        )}
 
         <View style={styles.dashedLine} />
 

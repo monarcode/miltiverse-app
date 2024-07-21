@@ -8,20 +8,32 @@ import CardPreview from './cardPreview';
 
 import { Button, Text, View } from '~/components/shared';
 import CustomMaskedInput from '~/components/shared/custom-masked-input';
+import { validateMonthYear } from '~/helpers/validateDate';
 import useCheckoutStore from '~/store/checkout';
 
 const PaymentScreen = () => {
   const { styles, theme } = useStyles(_styles);
   const changeStage = useCheckoutStore((v) => v.setStage);
-  const [cardNumber, setCardNumber] = useState<string>('');
-  const [cardExpiry, setCardExpiry] = useState<string>('');
-  const [cardCvv, setCardCvv] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const topInset = useSafeAreaInsets().top;
   const cardDetails = useCheckoutStore((v) => v.cardDetails);
   const updateCardDetails = useCheckoutStore((v) => v.updateCardDetails);
 
   const onPress = async () => {
+    if (!cardDetails) return;
+    if (!cardDetails.cardNumber) return;
+    if (!cardDetails.cardExpiry) return;
+    if (!cardDetails.cardCvv) return;
+    if (
+      cardDetails.cardNumber?.length < 19 ||
+      cardDetails.cardExpiry?.length < 5 ||
+      cardDetails.cardCvv?.length < 3
+    ) {
+      return;
+    }
+
+    if (!validateMonthYear(cardDetails.cardExpiry)) return;
+
     setLoading(true);
     await new Promise((r) => setTimeout(r, 3000));
     changeStage('success');
